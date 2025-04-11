@@ -1,16 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Domain.Entities;
+using Application.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace Persistence.Contexts
 {
     public class EventAppDbContext : DbContext
     {
-        public EventAppDbContext(DbContextOptions<EventAppDbContext> options)
-            : base(options)
+        public EventAppDbContext(DbContextOptions<EventAppDbContext> options) : base(options) { }
+
+        public DbSet<Event> Events => Set<Event>();
+        public DbSet<Participant> Participants => Set<Participant>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EventAppDbContext).Assembly);
         }
-        public DbSet<Event> Events => Set<Event>(); // Пример: если у тебя уже есть сущность Event
     }
 }
 
