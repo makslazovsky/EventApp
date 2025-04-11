@@ -1,4 +1,5 @@
 using Persistence.Extensions;
+using Application.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API
@@ -12,6 +13,7 @@ namespace API
             builder.Services.AddPersistence(
                 builder.Configuration.GetConnectionString("DefaultConnection"));
 
+            builder.Services.AddApplication();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
