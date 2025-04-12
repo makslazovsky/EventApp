@@ -1,6 +1,8 @@
-using Persistence.Extensions;
+using API.Middlewares;
 using Application.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Contexts;
+using Persistence.Extensions;
 
 namespace API
 {
@@ -10,17 +12,17 @@ namespace API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddPersistence(
-                builder.Configuration.GetConnectionString("DefaultConnection"));
-
+            builder.Services.AddPersistence(builder.Configuration.GetConnectionString("DefaultConnection"));
             builder.Services.AddApplication();
 
+
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+            
+            app.UseValidationExceptionMiddleware();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -31,9 +33,18 @@ namespace API
 
             app.UseHttpsRedirection();
 
+
             app.UseAuthorization();
 
             app.MapControllers();
+
+            // Auto apply migrations
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<EventAppDbContext>();
+                dbContext.Database.Migrate();
+            }
+
 
             app.Run();
         }
