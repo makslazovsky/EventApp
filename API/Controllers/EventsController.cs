@@ -5,6 +5,7 @@ using Application.UseCases.Events.GetEventById;
 using Application.UseCases.Events.GetEventByTitle;
 using Application.UseCases.Events.GetFilteredEvents;
 using Application.UseCases.Events.UpdateEvent;
+using Application.UseCases.Events.UploadImage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -81,6 +82,23 @@ namespace API.Controllers
         {
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        [HttpPost("{id}/upload-image")]
+        public async Task<IActionResult> UploadImage(Guid id, IFormFile file)
+        {
+            using var memoryStream = new MemoryStream();
+            await file.CopyToAsync(memoryStream);
+
+            var command = new UploadEventImageCommand
+            {
+                EventId = id,
+                FileName = file.FileName,
+                FileContent = memoryStream.ToArray()
+            };
+
+            var result = await _mediator.Send(command);
+            return Ok(new { imageUrl = result });
         }
 
     }

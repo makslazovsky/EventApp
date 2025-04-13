@@ -9,5 +9,7 @@
         public string Location { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public int MaxParticipants { get; set; }
+
+        public string? ImagePath { get; set; }
     }
 }
