@@ -1,4 +1,4 @@
-﻿using Application.Entities;
+﻿using Domain.Entities;
 using Application.Exceptions;
 using Application.Interfaces;
 using MediatR;
@@ -20,7 +20,7 @@ namespace Application.UseCases.Events.DeleteEvent
             
             await _eventRepository.DeleteAsync(entity);
 
-            return Unit.Value; // Успешное завершение без возврата данных
+            return Unit.Value; 
         }
     }
 }

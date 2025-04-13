@@ -1,5 +1,4 @@
 ﻿using Application.DTOs;
-using Application.Entities;
 using MediatR;
 
 namespace Application.UseCases.Events.GetEventByTitle

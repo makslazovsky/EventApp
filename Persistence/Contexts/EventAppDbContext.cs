@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Application.Entities;
-using Microsoft.Extensions.Logging;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts
 {

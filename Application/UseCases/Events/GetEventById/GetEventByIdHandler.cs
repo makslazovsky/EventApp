@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.Entities;
+using Domain.Entities;
 using Application.Exceptions;
 using Application.Interfaces;
 using AutoMapper;

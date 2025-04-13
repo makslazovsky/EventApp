@@ -4,11 +4,11 @@ using Domain.Entities;
 
 namespace Application.Mappings
 {
-    public class EventProfile : Profile
+    public class ParticipantProfile : Profile
     {
-        public EventProfile()
+        public ParticipantProfile()
         {
-            CreateMap<Event, EventDto>().ReverseMap();
+            CreateMap<Participant, ParticipantDto>();
         }
     }
 }

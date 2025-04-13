@@ -1,4 +1,4 @@
-﻿using Application.Entities;
+﻿using Domain.Entities;
 using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
@@ -60,6 +60,13 @@ namespace Persistence.Repositories
             return await _context.Events
                 .Where(e => e.Date.Date == date.Date)
                 .ToListAsync();
+        }
+
+        public async Task<Event?> GetByIdWithParticipantsAsync(Guid id)
+        {
+            return await _context.Events
+                .Include(e => e.Participants)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
     }
 }

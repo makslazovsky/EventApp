@@ -1,6 +1,6 @@
 ﻿using Application.Interfaces;
 using MediatR;
-using Application.Entities;
+using Domain.Entities;
 
 namespace Application.UseCases.Events.CreateEvent
 {

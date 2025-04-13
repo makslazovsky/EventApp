@@ -1,0 +1,13 @@
+﻿using Domain.Entities;
+
+namespace Application.Interfaces;
+
+public interface IParticipantRepository
+{
+    Task<Participant?> GetByIdAsync(Guid id);
+    Task<List<Participant>> GetAllByEventIdAsync(Guid eventId);
+    Task<List<Participant>> GetByEventIdAsync(Guid eventId);
+    Task AddAsync(Participant participant);
+    void Delete(Participant participant);
+    Task SaveChangesAsync();
+}
