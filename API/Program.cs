@@ -20,6 +20,8 @@ namespace API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddAutoMapper(typeof(Application.AssemblyReference).Assembly);
+
             var app = builder.Build();
             
             app.UseValidationExceptionMiddleware();

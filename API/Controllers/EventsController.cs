@@ -28,12 +28,14 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var query = new GetAllEventsQuery();
+            var query = new GetAllEventsQuery(pageNumber, pageSize);
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateEventCommand command)

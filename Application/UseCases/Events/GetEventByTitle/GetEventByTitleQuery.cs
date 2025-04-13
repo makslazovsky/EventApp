@@ -1,10 +1,11 @@
-﻿using Application.Entities;
+﻿using Application.DTOs;
+using Application.Entities;
 using MediatR;
 
 namespace Application.UseCases.Events.GetEventByTitle
 {
-    public class GetEventByTitleQuery : IRequest<Event>
+    public class GetEventByTitleQuery : IRequest<EventDto>
     {
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
     }
 }
