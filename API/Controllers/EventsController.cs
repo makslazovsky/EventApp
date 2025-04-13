@@ -3,6 +3,7 @@ using Application.UseCases.Events.DeleteEvent;
 using Application.UseCases.Events.GetAllEvents;
 using Application.UseCases.Events.GetEventById;
 using Application.UseCases.Events.GetEventByTitle;
+using Application.UseCases.Events.GetFilteredEvents;
 using Application.UseCases.Events.UpdateEvent;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -74,5 +75,13 @@ namespace API.Controllers
                 return NotFound();
             return Ok(result);
         }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> Filter([FromQuery] GetFilteredEventsQuery query)
+        {
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
     }
 }
