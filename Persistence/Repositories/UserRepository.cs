@@ -44,5 +44,15 @@ namespace Persistence.Repositories
             _context.Users.Update(user);
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Users.AnyAsync(u => u.Email == email, cancellationToken);
+        }
+
+        public async Task<int> GetUsersCountAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Users.CountAsync(cancellationToken);
+        }
     }
 }

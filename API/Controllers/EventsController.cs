@@ -7,6 +7,7 @@ using Application.UseCases.Events.GetFilteredEvents;
 using Application.UseCases.Events.UpdateEvent;
 using Application.UseCases.Events.UploadImage;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -23,6 +24,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateEventCommand command)
         {
             var result = await _mediator.Send(command);
@@ -30,6 +32,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var query = new GetAllEventsQuery(pageNumber, pageSize);
@@ -40,6 +43,7 @@ namespace API.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateEventCommand command)
         {
             if (id != command.Id)
@@ -50,6 +54,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteEventCommand { Id = id };
@@ -58,6 +63,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-id/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
         {
             var query = new GetEventByIdQuery { Id = id };
@@ -68,6 +74,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-title/{title}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByTitle(string title)
         {
             var query = new GetEventByTitleQuery { Title = title };
@@ -78,6 +85,7 @@ namespace API.Controllers
         }
 
         [HttpGet("filter")]
+        [AllowAnonymous]
         public async Task<IActionResult> Filter([FromQuery] GetFilteredEventsQuery query)
         {
             var result = await _mediator.Send(query);
@@ -85,6 +93,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/upload-image")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UploadImage(Guid id, IFormFile file)
         {
             using var memoryStream = new MemoryStream();

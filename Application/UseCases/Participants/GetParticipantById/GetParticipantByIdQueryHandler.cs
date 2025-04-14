@@ -11,11 +11,16 @@ namespace Application.UseCases.Participants.GetParticipantById
     {
         private readonly IParticipantRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUser;
 
-        public GetParticipantByIdQueryHandler(IParticipantRepository repository, IMapper mapper)
+        public GetParticipantByIdQueryHandler(
+            IParticipantRepository repository,
+            IMapper mapper,
+            ICurrentUserService currentUser)
         {
             _repository = repository;
             _mapper = mapper;
+            _currentUser = currentUser;
         }
 
         public async Task<ParticipantDto> Handle(GetParticipantByIdQuery request, CancellationToken cancellationToken)
@@ -25,7 +30,14 @@ namespace Application.UseCases.Participants.GetParticipantById
             if (participant is null)
                 throw new NotFoundException(nameof(Participant), request.Id);
 
+            var isAdmin = _currentUser.Role == "Admin";
+            var isOwner = participant.UserId == _currentUser.UserId;
+
+            if (!isAdmin && !isOwner)
+                throw new UnauthorizedException("Вы не имеете доступа к этому участнику");
+
             return _mapper.Map<ParticipantDto>(participant);
         }
     }
+
 }

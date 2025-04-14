@@ -3,6 +3,7 @@ using Application.UseCases.Participants.GetParticipantById;
 using Application.UseCases.Participants.GetParticipantsByEventId;
 using Application.UseCases.Participants.RegisterParticipant;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,6 +20,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Register([FromBody] RegisterParticipantCommand command)
         {
             var id = await _mediator.Send(command);
@@ -26,6 +28,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(Guid id)
         {
             var participant = await _mediator.Send(new GetParticipantByIdQuery(id));
@@ -33,6 +36,7 @@ namespace API.Controllers
         }
 
         [HttpGet("event/{eventId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetByEventId(Guid eventId)
         {
             var participants = await _mediator.Send(new GetParticipantsByEventIdQuery(eventId));
@@ -40,6 +44,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Cancel(Guid id)
         {
             await _mediator.Send(new CancelParticipantRegistrationCommand(id));

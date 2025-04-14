@@ -11,5 +11,9 @@ namespace Application.Interfaces
 
         Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken);
         Task UpdateUserAsync(User user, CancellationToken cancellationToken);
+
+        Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken);
+
+        Task<int> GetUsersCountAsync(CancellationToken cancellationToken);
     }
 }

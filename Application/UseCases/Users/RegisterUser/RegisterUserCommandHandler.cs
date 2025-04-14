@@ -20,6 +20,9 @@ namespace Application.UseCases.Users.RegisterUser
             if (await _userRepository.UserExistsAsync(request.Username, cancellationToken))
                 throw new Exception("Пользователь с таким именем уже существует.");
 
+            if (await _userRepository.EmailExistsAsync(request.Email, cancellationToken))
+                throw new Exception("Пользователь с таким email уже существует.");
+
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -27,6 +30,15 @@ namespace Application.UseCases.Users.RegisterUser
                 Email = request.Email,
                 PasswordHash = HashPassword(request.Password)
             };
+
+            if (await _userRepository.GetUsersCountAsync(cancellationToken) == 0)
+            {
+                user.Role = "Admin"; // Здесь ты можешь использовать роль из таблицы ролей
+            }
+            else
+            {
+                user.Role = "User"; // Стандартная роль для других пользователей
+            }
 
             await _userRepository.AddUserAsync(user, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
