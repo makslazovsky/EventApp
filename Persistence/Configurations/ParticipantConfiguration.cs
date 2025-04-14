@@ -16,6 +16,10 @@ namespace Persistence.Configurations
             builder.HasOne(p => p.Event)
                    .WithMany(e => e.Participants)
                    .HasForeignKey(p => p.EventId);
+
+            builder.HasOne(p => p.User)
+                   .WithOne(u => u.Participant)
+                   .HasForeignKey<Participant>(p => p.UserId);
         }
     }
 }

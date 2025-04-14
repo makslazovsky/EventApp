@@ -17,6 +17,7 @@ namespace Persistence.Extensions
 
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IParticipantRepository, ParticipantRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }

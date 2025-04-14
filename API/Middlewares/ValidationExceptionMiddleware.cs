@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Exceptions;
+using FluentValidation;
 using System.Net;
 using System.Text.Json;
 
@@ -29,6 +30,11 @@ namespace API.Middlewares
                 var result = JsonSerializer.Serialize(new { Errors = errors });
 
                 await httpContext.Response.WriteAsync(result);
+            }
+            catch (UnauthorizedException ex)
+            {
+                httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await httpContext.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
         }
     }

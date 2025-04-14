@@ -1,8 +1,13 @@
 using API.Middlewares;
-using Application.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
+using Application.Extensions;
 using Persistence.Extensions;
+using Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace API
 {
@@ -14,11 +19,59 @@ namespace API
 
             builder.Services.AddPersistence(builder.Configuration.GetConnectionString("DefaultConnection"));
             builder.Services.AddApplication();
+            builder.Services.AddInfrastructure();
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                var key = builder.Configuration["Jwt:Key"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
+                    ClockSkew = TimeSpan.Zero 
+                };
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy =>
+                    policy.RequireRole("Admin"));
+
+                options.AddPolicy("UserOnly", policy =>
+                    policy.RequireRole("User"));
+            });
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter the token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
 
             builder.Services.AddAutoMapper(typeof(Application.AssemblyReference).Assembly);
 
@@ -30,12 +83,16 @@ namespace API
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                    c.InjectStylesheet("/swagger-ui/custom.css"); 
+                });
             }
 
             app.UseHttpsRedirection();
 
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
