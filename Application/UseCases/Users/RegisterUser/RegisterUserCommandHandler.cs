@@ -33,11 +33,11 @@ namespace Application.UseCases.Users.RegisterUser
 
             if (await _userRepository.GetUsersCountAsync(cancellationToken) == 0)
             {
-                user.Role = "Admin"; // Здесь ты можешь использовать роль из таблицы ролей
+                user.Role = "Admin";
             }
             else
             {
-                user.Role = "User"; // Стандартная роль для других пользователей
+                user.Role = "User"; 
             }
 
             await _userRepository.AddUserAsync(user, cancellationToken);
