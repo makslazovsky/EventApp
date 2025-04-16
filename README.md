@@ -10,7 +10,7 @@ EventApp — это веб-приложение для управления ме
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-> Если вы планируете **разрабатывать или запускать проект локально без Docker**, тогда дополнительно потребуются:
+> Для локальной разработки проекта без Docker дополнительно потребуются:
 > - [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
 > - [Node.js (LTS)](https://nodejs.org/)
 
@@ -21,7 +21,7 @@ EventApp — это веб-приложение для управления ме
 1. Клонируйте репозиторий:
 
    ```bash
-   git clone https://github.com/your-username/EventApp.git
+   git clone https://github.com/makslazovsky/EventApp.git
    cd EventApp
    ```
 
@@ -81,7 +81,7 @@ Frontend:
 Авторизация (в процессе)
 
 - На сервере реализована выдача JWT access и refresh токенов.
-- Авторизация и аутентификация через `JWT Bearer`.
+- Авторизация и аутентификация через JWT Bearer.
 - На клиенте механизм хранения токена и отправки его в запросах **ещё не реализован**.
 
 Пока доступ к защищённым эндпоинтам возможен через:
