@@ -8,7 +8,8 @@ namespace Application.Mappings
     {
         public EventProfile()
         {
-            CreateMap<Event, EventDto>().ReverseMap();
+            CreateMap<Event, EventDto>()
+                .ForMember(dest => dest.CurrentParticipants, opt => opt.MapFrom(src => src.Participants.Count));
         }
     }
 }

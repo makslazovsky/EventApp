@@ -19,7 +19,8 @@ namespace Application.UseCases.Events.GetAllEvents
 
         public async Task<PagedResult<EventDto>> Handle(GetAllEventsQuery request, CancellationToken cancellationToken)
         {
-            var allEvents = await _eventRepository.GetAllAsync();
+            var allEvents = await _eventRepository
+                .GetAllWithParticipantsAsync();
 
             var items = allEvents
                 .Skip((request.PageNumber - 1) * request.PageSize)

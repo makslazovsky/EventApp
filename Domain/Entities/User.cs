@@ -11,7 +11,7 @@
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiry { get; set; }
 
-        public Participant? Participant { get; set; }
+        public List<Participant> Participants { get; set; } = new();
     }
 
 

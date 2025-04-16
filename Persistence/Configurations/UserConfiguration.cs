@@ -17,9 +17,9 @@ namespace Persistence.Configurations
 
             builder.Property(u => u.RefreshTokenExpiry);
 
-            builder.HasOne(u => u.Participant)
+            builder.HasMany(u => u.Participants)
                    .WithOne(p => p.User)
-                   .HasForeignKey<Participant>(p => p.UserId);
+                   .HasForeignKey(p => p.UserId);
         }
     }
 }

@@ -68,5 +68,12 @@ namespace Persistence.Repositories
                 .Include(e => e.Participants)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
+
+        public async Task<IEnumerable<Event>> GetAllWithParticipantsAsync()
+        {
+            return await _context.Events
+                .Include(e => e.Participants)
+                .ToListAsync();
+        }
     }
 }

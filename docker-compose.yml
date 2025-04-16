@@ -34,6 +34,17 @@ services:
     networks:
       - app-network
 
+  client:
+    build:
+      context: ./clientapp
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+    depends_on:
+      - api
+
 volumes:
   mssqldata:
 

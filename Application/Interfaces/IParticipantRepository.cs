@@ -10,4 +10,5 @@ public interface IParticipantRepository
     Task AddAsync(Participant participant);
     void Delete(Participant participant);
     Task SaveChangesAsync();
+    Task<bool> IsUserRegisteredForEvent(Guid userId, Guid eventId);
 }

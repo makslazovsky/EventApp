@@ -14,6 +14,8 @@ namespace Application.Interfaces
         Task AddAsync(Event ev);
         Task UpdateAsync(Event ev);
         Task DeleteAsync(Event ev);
+
+        Task<IEnumerable<Event>> GetAllWithParticipantsAsync();
     }
 
 }

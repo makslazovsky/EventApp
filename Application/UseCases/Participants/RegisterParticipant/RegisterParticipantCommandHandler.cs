@@ -8,13 +8,15 @@ public class RegisterParticipantCommandHandler : IRequestHandler<RegisterPartici
 {
     private readonly IParticipantRepository _participantRepository;
     private readonly IEventRepository _eventRepository;
-
+    private readonly ICurrentUserService _currentUserService;
     public RegisterParticipantCommandHandler(
-        IParticipantRepository participantRepository,
-        IEventRepository eventRepository)
+    IParticipantRepository participantRepository,
+    IEventRepository eventRepository,
+    ICurrentUserService currentUserService)
     {
         _participantRepository = participantRepository;
         _eventRepository = eventRepository;
+        _currentUserService = currentUserService;
     }
 
     public async Task<Guid> Handle(RegisterParticipantCommand request, CancellationToken cancellationToken)
@@ -27,6 +29,12 @@ public class RegisterParticipantCommandHandler : IRequestHandler<RegisterPartici
         if (eventEntity.Participants.Count >= eventEntity.MaxParticipants)
             throw new InvalidOperationException("Максимальное количество участников достигнуто.");
 
+        var userId = _currentUserService.UserId
+             ?? throw new UnauthorizedAccessException("Пользователь не авторизован");
+
+        if (await _participantRepository.IsUserRegisteredForEvent(userId, request.EventId))
+            throw new InvalidOperationException("Вы уже зарегистрированы на это событие.");
+
         var participant = new Participant
         {
             Id = Guid.NewGuid(),
@@ -35,8 +43,10 @@ public class RegisterParticipantCommandHandler : IRequestHandler<RegisterPartici
             BirthDate = request.BirthDate,
             Email = request.Email,
             RegistrationDate = DateTime.UtcNow,
-            EventId = request.EventId
+            EventId = request.EventId,
+            UserId = userId
         };
+
 
         await _participantRepository.AddAsync(participant);
         await _participantRepository.SaveChangesAsync();

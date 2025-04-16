@@ -18,8 +18,12 @@ namespace Persistence.Configurations
                    .HasForeignKey(p => p.EventId);
 
             builder.HasOne(p => p.User)
-                   .WithOne(u => u.Participant)
-                   .HasForeignKey<Participant>(p => p.UserId);
+                  .WithMany(u => u.Participants)
+                  .HasForeignKey(p => p.UserId);
+
+            // ✅ Уникальный индекс (UserId + EventId)
+            builder.HasIndex(p => new { p.UserId, p.EventId }).IsUnique();
+
         }
     }
 }

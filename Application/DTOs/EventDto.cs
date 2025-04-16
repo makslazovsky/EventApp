@@ -11,5 +11,7 @@
         public int MaxParticipants { get; set; }
 
         public string? ImagePath { get; set; }
+
+        public int CurrentParticipants { get; set; }
     }
 }
