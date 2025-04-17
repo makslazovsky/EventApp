@@ -48,7 +48,7 @@ EventApp/
 │   ├── Domain/            # Доменные модели
 │   ├── Infrastructure/    # Внешние сервисы
 │   ├── Persistence/       # EF Core, DbContext, миграции
-|	├── Tests/			   # xUnit проект для unit-тестов
+|   ├── Tests/			   # xUnit проект для unit-тестов
 │   └── clientapp/         # React (TypeScript) клиент
 ├── docker-compose.yml
 └── README.md              # Этот файл
