@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;

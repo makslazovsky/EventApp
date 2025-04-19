@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using System.Security.Claims;
 
-namespace Application.Interfaces
+namespace Domain.Interfaces.Services
 {
     public interface IJwtService
     {

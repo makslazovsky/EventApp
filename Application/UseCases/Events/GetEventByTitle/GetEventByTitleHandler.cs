@@ -1,7 +1,7 @@
 ﻿using Application.DTOs;
 using Domain.Entities;
 using Application.Exceptions;
-using Application.Interfaces;
+using Domain.Interfaces.Repository;
 using AutoMapper;
 using MediatR;
 

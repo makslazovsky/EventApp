@@ -1,5 +1,6 @@
 ﻿using Application.Exceptions;
-using Application.Interfaces;
+using Domain.Interfaces.Repository;
+using Domain.Interfaces.Services;
 using Application.UseCases.Participants.RegisterParticipant;
 using Domain.Entities;
 using MediatR;

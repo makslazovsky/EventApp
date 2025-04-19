@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 using Application.Exceptions;
-using Application.Interfaces;
+using Domain.Interfaces.Repository;
 using MediatR;
 
 namespace Application.UseCases.Events.DeleteEvent

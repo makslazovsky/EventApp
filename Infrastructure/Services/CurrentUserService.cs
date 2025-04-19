@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Application.Interfaces;
+using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services
