@@ -45,7 +45,7 @@ EventApp/
 ├── src/
 │   ├── API/               # ASP.NET Core Web API
 │   ├── Application/       # Бизнес-логика (UseCases, Commands, Queries)
-│   ├── Domain/            # Доменные модели
+│   ├── Domain/            # Доменные модели и интерфейсы
 │   ├── Infrastructure/    # Внешние сервисы
 │   ├── Persistence/       # EF Core, DbContext, миграции
 |   ├── Tests/			   # xUnit проект для unit-тестов
@@ -69,7 +69,6 @@ Backend:
 
 Frontend:
 - React + TypeScript
-- Vite
 - TailwindCSS
 
 Инфраструктура:
