@@ -28,13 +28,13 @@ public class RegisterParticipantCommandHandler : IRequestHandler<RegisterPartici
             throw new NotFoundException(nameof(Event), request.EventId);
 
         if (eventEntity.Participants.Count >= eventEntity.MaxParticipants)
-            throw new InvalidOperationException("Максимальное количество участников достигнуто.");
+            throw new ConflictException("Максимальное количество участников достигнуто.");
 
         var userId = _currentUserService.UserId
              ?? throw new UnauthorizedAccessException("Пользователь не авторизован");
 
         if (await _participantRepository.IsUserRegisteredForEvent(userId, request.EventId))
-            throw new InvalidOperationException("Вы уже зарегистрированы на это событие.");
+            throw new ConflictException("Вы уже зарегистрированы на это событие.");
 
         var participant = new Participant
         {

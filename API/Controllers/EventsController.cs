@@ -1,4 +1,5 @@
-﻿using Application.UseCases.Events.CreateEvent;
+﻿using Application.Exceptions;
+using Application.UseCases.Events.CreateEvent;
 using Application.UseCases.Events.DeleteEvent;
 using Application.UseCases.Events.GetAllEvents;
 using Application.UseCases.Events.GetEventById;
@@ -47,7 +48,7 @@ namespace API.Controllers
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateEventCommand command)
         {
             if (id != command.Id)
-                return BadRequest("ID mismatch");
+                throw new BadRequestException("Id в теле запроса и Id в URL не совпадают");
 
             await _mediator.Send(command);
             return NoContent();
@@ -68,8 +69,6 @@ namespace API.Controllers
         {
             var query = new GetEventByIdQuery { Id = id };
             var result = await _mediator.Send(query);
-            if (result == null)
-                return NotFound();
             return Ok(result);
         }
 
@@ -79,8 +78,6 @@ namespace API.Controllers
         {
             var query = new GetEventByTitleQuery { Title = title };
             var result = await _mediator.Send(query);
-            if (result == null)
-                return NotFound();
             return Ok(result);
         }
 

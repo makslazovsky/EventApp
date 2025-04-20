@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Repository;
+﻿using Application.Exceptions;
+using Domain.Interfaces.Repository;
 using MediatR;
 
 namespace Application.UseCases.Events.UploadImage
@@ -16,7 +17,7 @@ namespace Application.UseCases.Events.UploadImage
         {
             var eventItem = await _eventRepository.GetByIdAsync(request.EventId);
             if (eventItem == null)
-                throw new Exception("Event not found");
+                throw new NotFoundException("Event ", request.EventId);
 
             var ext = Path.GetExtension(request.FileName);
             var fileName = $"{Guid.NewGuid()}{ext}";

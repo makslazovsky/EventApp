@@ -1,4 +1,6 @@
-﻿using Domain.Interfaces.Repository;
+﻿using Application.Exceptions;
+using Domain.Entities;
+using Domain.Interfaces.Repository;
 using MediatR;
 
 namespace Application.UseCases.Events.UpdateEvent
@@ -16,7 +18,7 @@ namespace Application.UseCases.Events.UpdateEvent
         {
             var entity = await _eventRepository.GetByIdAsync(request.Id);
             if (entity == null)
-                throw new Exception("Event not found");
+                throw new NotFoundException(nameof(Event), request.Id);
 
             entity.Title = request.Title;
             entity.Description = request.Description;

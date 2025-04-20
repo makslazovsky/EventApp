@@ -31,19 +31,24 @@ namespace API.Middlewares
 
                 await httpContext.Response.WriteAsync(result);
             }
-            catch (BadRequestException ex) // 400
+            catch (BadRequestException ex) 
             {
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await httpContext.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
-            catch (UnauthorizedException ex) //401
+            catch (UnauthorizedException ex) 
             {
                 httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await httpContext.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
-            catch (NotFoundException ex) //404
+            catch (NotFoundException ex) 
             {
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                await httpContext.Response.WriteAsJsonAsync(new { error = ex.Message });
+            }
+            catch (ConflictException ex)
+            {
+                httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
                 await httpContext.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
             catch (Exception ex)
