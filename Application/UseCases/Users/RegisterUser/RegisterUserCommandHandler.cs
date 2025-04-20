@@ -3,6 +3,7 @@ using Domain.Entities;
 using MediatR;
 using System.Security.Cryptography;
 using System.Text;
+using Application.Exceptions;
 
 namespace Application.UseCases.Users.RegisterUser
 {
@@ -18,10 +19,10 @@ namespace Application.UseCases.Users.RegisterUser
         public async Task<string> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             if (await _userRepository.UserExistsAsync(request.Username, cancellationToken))
-                throw new Exception("Пользователь с таким именем уже существует.");
+                throw new BadRequestException("Пользователь с таким именем уже существует.");
 
             if (await _userRepository.EmailExistsAsync(request.Email, cancellationToken))
-                throw new Exception("Пользователь с таким email уже существует.");
+                throw new BadRequestException("Пользователь с таким email уже существует.");
 
             var user = new User
             {

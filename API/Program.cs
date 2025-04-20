@@ -88,7 +88,7 @@ namespace API
 
             var app = builder.Build();
             
-            app.UseValidationExceptionMiddleware();
+            app.UseExceptionHandlingMiddleware();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

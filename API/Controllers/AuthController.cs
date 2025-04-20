@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.UseCases.Users.GetCurrentUser;
 using Application.UseCases.Users.LoginUser;
 using Application.UseCases.Users.RefreshToken;
 using Application.UseCases.Users.RegisterUser;
@@ -43,18 +43,12 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
         [HttpGet("me")]
-        public IActionResult GetCurrentUser([FromServices] ICurrentUserService currentUserService)
+        [Authorize]
+        public async Task<IActionResult> GetCurrentUser()
         {
-            if (currentUserService.UserId == null)
-                return Unauthorized();
-
-            return Ok(new
-            {
-                userId = currentUserService.UserId,
-                role = currentUserService.Role
-            });
+            var result = await _mediator.Send(new GetCurrentUserQuery());
+            return Ok(result);
         }
     }
 }

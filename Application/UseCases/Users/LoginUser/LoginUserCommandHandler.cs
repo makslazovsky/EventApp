@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.Exceptions;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
 using MediatR;
@@ -23,7 +24,7 @@ namespace Application.UseCases.Users.LoginUser
             var user = await _userRepository.GetByUsernameAsync(request.Username, cancellationToken);
 
             if (user == null || user.PasswordHash != HashPassword(request.Password))
-                throw new UnauthorizedAccessException("Неверные имя пользователя или пароль.");
+                throw new UnauthorizedException("Неверные имя пользователя или пароль.");
 
             var accessToken = _jwtService.GenerateAccessToken(user);
             var refreshToken = _jwtService.GenerateRefreshToken();
