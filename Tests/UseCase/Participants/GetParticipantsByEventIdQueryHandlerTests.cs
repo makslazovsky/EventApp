@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.Interfaces;
+using Domain.Interfaces.Repository;
 using Application.UseCases.Participants.GetParticipantsByEventId;
 using AutoMapper;
 using Domain.Entities;

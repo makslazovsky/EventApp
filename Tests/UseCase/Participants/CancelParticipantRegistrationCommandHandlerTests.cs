@@ -1,5 +1,5 @@
 ﻿using Application.Exceptions;
-using Application.Interfaces;
+using Domain.Interfaces.Repository;
 using Application.UseCases.Participants.CancelParticipantRegistration;
 using Domain.Entities;
 using FluentAssertions;

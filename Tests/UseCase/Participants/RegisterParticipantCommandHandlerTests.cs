@@ -1,8 +1,9 @@
-﻿using Application.Interfaces;
+﻿using Domain.Interfaces.Repository;
 using Application.UseCases.Participants.RegisterParticipant;
 using Domain.Entities;
 using FluentAssertions;
 using Moq;
+using Domain.Interfaces.Services;
 
 namespace Tests.UseCase.Participants;
 
@@ -10,11 +11,13 @@ public class RegisterParticipantCommandHandlerTests
 {
     private readonly Mock<IParticipantRepository> _participantRepoMock = new();
     private readonly Mock<IEventRepository> _eventRepoMock = new();
+    private readonly Mock<ICurrentUserService> _currentUserMock;
     private readonly RegisterParticipantCommandHandler _handler;
 
     public RegisterParticipantCommandHandlerTests()
     {
-        _handler = new RegisterParticipantCommandHandler(_participantRepoMock.Object, _eventRepoMock.Object);
+        _currentUserMock = new Mock<ICurrentUserService>();
+        _handler = new RegisterParticipantCommandHandler(_participantRepoMock.Object, _eventRepoMock.Object, _currentUserMock.Object);
     }
 
     [Fact]
@@ -22,7 +25,9 @@ public class RegisterParticipantCommandHandlerTests
     {
         // Arrange
         var eventId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
 
+        _currentUserMock.Setup(s => s.UserId).Returns(userId);
         var command = new RegisterParticipantCommand(
             FirstName: "John",
             LastName: "Doe",
